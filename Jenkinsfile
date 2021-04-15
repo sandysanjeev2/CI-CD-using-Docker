@@ -32,7 +32,8 @@ pipeline {
           
             steps {
         withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-          sh  'docker push sandysanjeev2/samplewebapp:latest'
+          sh 'docker login -u sandysanjeev2 --password-stdin 12671aA0345$'
+		sh  'docker push sandysanjeev2/samplewebapp:latest'
         //  sh  'docker push sandysanjeev2/samplewebapp:$BUILD_NUMBER' 
         }
                   
