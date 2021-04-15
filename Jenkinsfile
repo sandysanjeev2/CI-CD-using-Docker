@@ -1,10 +1,13 @@
 pipeline {
     agent any
 	
-	  tools
-    {
-       maven "MAVEN_HOME"
+	  tools {
+      		  maven "MAVEN_HOME"
+		  jdk "JAVA_HOME"
     }
+	environment {    
+         mvnHome = "D:/Tools/apache-maven-3.6.3-1"
+        }
  stages {
       stage('checkout') {
            steps {
