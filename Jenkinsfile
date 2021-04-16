@@ -56,6 +56,7 @@ pipeline {
  
             }
         } */
-    }
+ 	// use url to ping: http://PublicIPAddpress:8003//LoginWebApp-1/  
+ }
 	}
     
