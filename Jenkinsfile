@@ -46,13 +46,13 @@ pipeline {
 			sh "docker ps -a -f status=exited -q | xargs --no-run-if-empty docker rm"
 		 }
 	 }
-     stage('Docker previous build images removing') {
+     /*stage('Docker previous build images removing') {
 		 steps
 		 {
 			sh "docker images sandysanjeev2/samplewebapp -q | xargs --no-run-if-empty docker rmi --force"
 	
 		 }
-	 }
+	 } */
 	 
       stage('Run Docker container on Jenkins Agent') {
              
