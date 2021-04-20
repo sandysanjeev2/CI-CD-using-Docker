@@ -51,7 +51,7 @@ pipeline {
              
             steps 
 			{
-                sh "docker run -d -p 8003:8080 sandysanjeev2/samplewebapp"
+                sh "docker run -it -d -p 8003:8080 --name=tomcat_deploy sandysanjeev2/samplewebapp"
  
             }
         }
