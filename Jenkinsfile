@@ -39,6 +39,13 @@ pipeline {
                   
           }
         }
+	 stage('Stopping and removing previous builds') {
+		 steps
+		 {
+			sh "docker ps -f name=tomcat_test -q | xargs --no-run-if-empty docker container stop"
+			sh "docker ps -a -f status=exited -q | xargs --no-run-if-empty docker rm"
+		 }
+	 }
      
       stage('Run Docker container on Jenkins Agent') {
              
