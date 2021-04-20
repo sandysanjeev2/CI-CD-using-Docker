@@ -22,7 +22,7 @@ pipeline {
            steps {
               
                 sh 'docker build -t samplewebapp:latest .' 
-                sh 'docker tag samplewebapp sandysanjeev2/samplewebapp:latest'
+                sh 'docker tag samplewebapp sandysanjeev2/samplewebapp:$BUILD_NUMBER'
                 //sh 'docker tag samplewebapp sandysanjeev2/samplewebapp:$BUILD_NUMBER'
                
           }
@@ -33,7 +33,7 @@ pipeline {
             steps {
         withDockerRegistry([ credentialsId: "sandysanjeev2", url: "" ]) {
      
-		sh  'docker push sandysanjeev2/samplewebapp:latest'
+		sh  'docker push sandysanjeev2/samplewebapp:$BUILD_NUMBER'
         //  sh  'docker push sandysanjeev2/samplewebapp:$BUILD_NUMBER' 
         }
                   
@@ -42,7 +42,7 @@ pipeline {
 	 stage('Stopping and removing previous builds') {
 		 steps
 		 {
-			sh "docker ps -f name=tomcat_test -q | xargs --no-run-if-empty docker container stop"
+			sh "docker ps -f name=tomcat_deploy -q | xargs --no-run-if-empty docker container stop"
 			sh "docker ps -a -f status=exited -q | xargs --no-run-if-empty docker rm"
 		 }
 	 }
@@ -59,7 +59,7 @@ pipeline {
              
             steps 
 			{
-                sh "docker run -d -p 8003:8080 sandysanjeev2/samplewebapp"
+                sh "docker run -it -d -p 8003:8080 --name="tomcat_deploy" sandysanjeev2/samplewebapp"
  
             }
         } */
