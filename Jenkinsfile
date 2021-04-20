@@ -39,14 +39,21 @@ pipeline {
                   
           }
         }
-	 stage('Stopping and removing previous builds') {
+	 stage('Stop and Remove Previous build containers') {
 		 steps
 		 {
 			sh "docker ps -f name=tomcat_deploy -q | xargs --no-run-if-empty docker container stop"
 			sh "docker ps -a -f status=exited -q | xargs --no-run-if-empty docker rm"
 		 }
 	 }
-     
+     stage('Docker previous build images removing') {
+		 steps
+		 {
+			sh "docker images sandysanjeev2/samplewebapp -q | xargs --no-run-if-empty docker rmi --force"
+	
+		 }
+	 }
+	 
       stage('Run Docker container on Jenkins Agent') {
              
             steps 
