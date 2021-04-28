@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-web-page-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sample-web-page
+  template:
+    metadata:
+      labels:
+        app: sample-web-page
+    spec:
+      containers:
+        - name: tomcat-sample-web-page
+          image: sandysanjeev2/samplewebapp:$BUILD_NUMBER
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-web-page-service
+spec:
+  selector:
+    app: sample-web-page
+  type: NodePort
+  ports:
+    - nodePort: 30088
+      port: 80
+      targetPort: 8080
