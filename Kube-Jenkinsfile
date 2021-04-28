@@ -38,16 +38,16 @@ pipeline {
         }         
           }
    stage('SSH Into k8s Server') {
-						steps {
-						 sshagent (credentials: ['K8S_ssh_cred']) {
-								sh "ssh -o StrictHostKeyChecking=no -l ubuntu 18.223.188.171"
-							  }
+	  steps {
+		sshagent (credentials: ['K8S_ssh_cred']) {
+		sh "ssh -o StrictHostKeyChecking=no -l ubuntu 3.143.249.147"
+		}
              stage('samplewebpage-deployment.yml onto k8smaster') {
              sshPut remote: remote, from: 'samplewebpage-deployment.yml', into: '.'
         }
              stage('Deploy spring boot') {
              sshCommand remote: remote, command: "kubectl apply -f k8s-spring-boot-deployment.yml"
-        }   
-        }
-        }
-	 }
+            }   
+         }
+      }
+ }
