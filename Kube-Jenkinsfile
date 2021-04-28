@@ -37,6 +37,7 @@ pipeline {
         //  sh  'docker push sandysanjeev2/samplewebapp:$BUILD_NUMBER' 
         }         
           }
+	  }
    stage('SSH Into k8s Server') {
 	  steps {
 		sshagent (credentials: ['K8S_ssh_cred']) {
@@ -51,3 +52,4 @@ pipeline {
          }
       }
  }
+}
