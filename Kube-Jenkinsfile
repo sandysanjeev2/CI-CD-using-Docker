@@ -41,8 +41,14 @@ pipeline {
     stage('SSH Into k8s Server') {
 	  steps {
 		sshagent (credentials: ['K8S_ssh_cred']) {
-		sh "ssh -o StrictHostKeyChecking=no -l ubuntu 3.143.249.147 kubectl apply -f samplewebpage-deployment.yml"
-		
+		sh "scp -o StrictHostKeyChecking=no service.yml samplewebpage-deployment.yml ubuntu@18.222.191.131:/home/ubuntu"
+		script{
+			try{
+				sh "ssh ubuntu@18.222.191.131 kubectl apply -f *.yml"
+			}catch(error){
+				sh "ssh ubuntu@18.222.191.131 kubectl create -f *.yml"
+			}
+			}
 		}
           /*   stage('samplewebpage-deployment.yml onto k8smaster') {
              sshPut remote: remote, from: 'samplewebpage-deployment.yml', into: '.'
