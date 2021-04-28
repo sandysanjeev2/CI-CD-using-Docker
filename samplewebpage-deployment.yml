@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: tomcat-sample-web-page
-          image: sandysanjeev2/samplewebapp:$BUILD_NUMBER
+          image: sandysanjeev2/samplewebapp:latest$BUILD_NUMBER
           ports:
             - containerPort: 8080
 ---
