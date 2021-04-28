@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+	
+	
+ stages {
+      stage('checkout') {
+           steps {
+             
+                git branch: 'master', url: 'https://github.com/sandysanjeev2/CI-CD-using-Docker.git'
+             
+          }
+        }
+	 stage('Execute Maven') {
+           steps {
+             
+                sh 'mvn package'             
+          }
+        }
+        
+
+  stage('Docker Build and Tag') {
+           steps {
+              
+                sh 'docker build -t samplewebapp:latest .' 
+                sh 'docker tag samplewebapp sandysanjeev2/samplewebapp:latest$BUILD_NUMBER'
+                //sh 'docker tag samplewebapp sandysanjeev2/samplewebapp:$BUILD_NUMBER'
+               
+          }
+        }
+     
+  stage('Publish image to Docker Hub') {
+          
+            steps {
+        withDockerRegistry([ credentialsId: "sandysanjeev2", url: "" ]) {
+     
+		sh  'docker push sandysanjeev2/samplewebapp:latest$BUILD_NUMBER'
+        //  sh  'docker push sandysanjeev2/samplewebapp:$BUILD_NUMBER' 
+        }         
+          }
+   stage('SSH Into k8s Server') {
+						steps {
+						 sshagent (credentials: ['K8S_ssh_cred']) {
+								sh "ssh -o StrictHostKeyChecking=no -l ubuntu 18.223.188.171"
+							  }
+             stage('samplewebpage-deployment.yml onto k8smaster') {
+             sshPut remote: remote, from: 'samplewebpage-deployment.yml', into: '.'
+        }
+             stage('Deploy spring boot') {
+             sshCommand remote: remote, command: "kubectl apply -f k8s-spring-boot-deployment.yml"
+        }   
+        }
+        }
+	 }
